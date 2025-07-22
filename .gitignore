@@ -6,4 +6,5 @@
 config.txt
 
 # n8n persistent data directory (ignore contents, keep folder)
-n8n_data/* 
+n8n_data/*
+!n8n_data/.gitkeep 
