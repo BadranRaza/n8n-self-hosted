@@ -120,6 +120,15 @@ goto setupcomplete
 
 :setupcomplete
 
+REM Create n8n_data folder if it doesn't exist
+if not exist "n8n_data" (
+    echo [INFO] Creating n8n_data folder...
+    mkdir n8n_data
+    echo [SUCCESS] n8n_data folder created!
+) else (
+    echo [INFO] n8n_data folder already exists.
+)
+
 REM Auto-configure all other environment variables
 set N8N_HOST=%NGROK_DOMAIN%
 set WEBHOOK_URL=https://%NGROK_DOMAIN%/
