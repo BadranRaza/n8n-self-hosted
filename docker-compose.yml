@@ -1,0 +1,67 @@
+services:
+  # n8n workflow automation platform
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n-server
+    restart: unless-stopped
+    ports:
+      # Bind to localhost only - public access will be through ngrok
+      - "127.0.0.1:5678:5678"
+    environment:
+      # Database configuration - using SQLite for simplicity
+      - DB_TYPE=sqlite
+      - DB_SQLITE_DATABASE=/home/node/.n8n/database.sqlite
+      
+      # n8n configuration from .env file
+      - N8N_HOST=${N8N_HOST}
+      - WEBHOOK_URL=${WEBHOOK_URL}
+      - N8N_PROTOCOL=https
+      - N8N_PORT=5678
+      
+      # Performance optimizations
+      - N8N_DEFAULT_BINARY_DATA_MODE=filesystem
+      - N8N_BINARY_DATA_TTL=60
+      
+      # Security settings
+      - N8N_SECURE_COOKIE=false
+      - N8N_METRICS=false
+      
+      # Timezone configuration
+      - GENERIC_TIMEZONE=${TIMEZONE:-UTC}
+      - TZ=${TIMEZONE:-UTC}
+    volumes:
+      # Persistent data storage - all workflows, credentials, and data
+      - ./n8n_data:/home/node/.n8n:rw
+    depends_on:
+      - ngrok
+    networks:
+      - n8n_network
+
+  # ngrok service for secure public tunnel
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: n8n-ngrok
+    restart: unless-stopped
+    environment:
+      # ngrok authentication token from .env file
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    command: 
+      # Create HTTP tunnel to n8n service using static domain
+      - "http"
+      - "--domain=${NGROK_DOMAIN}"
+      - "n8n:5678"
+    ports:
+      # ngrok web interface (optional, for debugging)
+      - "127.0.0.1:4040:4040"
+    networks:
+      - n8n_network
+
+# Network configuration for service communication
+networks:
+  n8n_network:
+    driver: bridge
+
+# Volume for persistent data (optional explicit definition)
+volumes:
+  n8n_data:
+    driver: local 

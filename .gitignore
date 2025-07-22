@@ -1,0 +1,9 @@
+# =================================================================
+# n8n Self-Hosted Instance - Git Ignore Rules
+# =================================================================
+
+# Environment configuration (contains sensitive data)
+config.txt
+
+# n8n persistent data directory (ignore contents, keep folder)
+n8n_data/* 
