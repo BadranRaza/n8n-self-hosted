@@ -25,6 +25,8 @@ A simple way to run n8n (workflow automation tool) on your computer with interne
 
 **Note**: n8n will only be accessible when your computer is running and the program is started.
 
+**Automatic Setup**: The program automatically creates the `n8n_data` folder to store your workflows and data.
+
 ## 🛠️ Using n8n
 
 ### After Starting
@@ -37,12 +39,13 @@ When the program finishes starting, you can:
 ## 📁 Files in This Folder
 
 ```
-my-n8n-server/
+n8n-self-hosted/
 ├── start-n8n-server.bat  # ← Double-click this to start
 ├── docker-compose.yml    # Settings for the program
 ├── .gitignore           # Technical file (ignore this)
 ├── README.md            # This help file
-└── n8n_data/            # Where your work is saved
+├── config.txt           # Your ngrok settings (created automatically)
+└── n8n_data/            # Where your work is saved (created automatically)
 ```
 
 ## 🔧 Setup Information
@@ -51,7 +54,9 @@ The program will ask you for:
 - **ngrok authtoken** (like a password for internet access)
 - **ngrok domain** (like a web address for your n8n)
 
-This information is saved so you don't need to enter it again.
+This information is saved in `config.txt` so you don't need to enter it again.
+
+**Automatic Folder Creation**: The program automatically creates the `n8n_data` folder on first run to store your workflows and data. You can also move your old data files into this folder for seamless migration.
 
 ## 🛡️ Security
 
